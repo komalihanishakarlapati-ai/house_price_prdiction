@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            color: var(--text-main);
+        }
+
+        .container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 400;
+            color: var(--text-dim);
+            margin-left: 0.5rem;
+        }
+
+        input, select {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .result h2 {
+            font-size: 1.5rem;
+            color: #a5b4fc;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+            form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>House Insight AI</h1>
+            <p class="subtitle">Enter location and property details to estimate market value</p>
+        </header>
+
+        <form action="/predict" method="POST">
+            <div class="input-group">
+                <label>Longitude</label>
+                <input type="number" step="any" name="longitude" placeholder="-122.23" required>
+            </div>
+            <div class="input-group">
+                <label>Latitude</label>
+                <input type="number" step="any" name="latitude" placeholder="37.88" required>
+            </div>
+            <div class="input-group">
+                <label>Housing Median Age</label>
+                <input type="number" step="any" name="housing_median_age" placeholder="41" required>
+            </div>
+            <div class="input-group">
+                <label>Total Rooms</label>
+                <input type="number" step="any" name="total_rooms" placeholder="880" required>
+            </div>
+            <div class="input-group">
+                <label>Total Bedrooms</label>
+                <input type="number" step="any" name="total_bedrooms" placeholder="129" required>
+            </div>
+            <div class="input-group">
+                <label>Population</label>
+                <input type="number" step="any" name="population" placeholder="322" required>
+            </div>
+            <div class="input-group">
+                <label>Households</label>
+                <input type="number" step="any" name="households" placeholder="126" required>
+            </div>
+            <div class="input-group">
+                <label>Median Income</label>
+                <input type="number" step="any" name="median_income" placeholder="8.32" required>
+            </div>
+            <div class="input-group full-width">
+                <label>Ocean Proximity (Priority)</label>
+                <select name="ocean_proximity" required>
+                    <option value="" disabled selected>Select priority...</option>
+                    {% for option in ocean_options %}
+                    <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <button type="submit" class="full-width">Calculate Estimate</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result">
+            <h2>{{ prediction_text }}</h2>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
